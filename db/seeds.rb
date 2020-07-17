@@ -178,11 +178,11 @@ puts "Generating requests!"
 end
 puts "Requests generated!"
 
-puts "Attempting to approve requests"
-CatRentalRequest.all.each do |request|
-  unless request.update(status: 'APPROVED')
-    request.status = 'DENIED'
-    request.save
-  end
-end
-puts "Requests approved!"
+# puts "Attempting to approve requests"
+# CatRentalRequest.all.each do |request|
+#   unless request.update(status: 'APPROVED')
+#     request.status = 'DENIED'
+#     request.save
+#   end
+# end
+# puts "Requests approved!"

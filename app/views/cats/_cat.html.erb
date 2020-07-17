@@ -21,5 +21,17 @@
       <td>Description:</td>
       <td><%= @cat.description %></td>
     </tr>
+    <tr>
+      <td>Existing Rental Requests</td>
+      <td>
+        <ol>
+          <% CatRentalRequest.where(cat_id: @cat.id)
+                            .order(:start_date)
+                            .each do |rental_request| %>
+            <li><%= rental_request.start_date %> - <%= rental_request.end_date %> (<%= rental_request.status %>)</li>
+          <% end %>
+        </ol>
+      </td>
+    </tr>
   </tbody>
 </table>

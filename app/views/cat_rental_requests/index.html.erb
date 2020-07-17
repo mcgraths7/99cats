@@ -1,0 +1,11 @@
+<h2>Current Requests:</h2>
+
+<ol>
+  <% @cat_rental_requests.each do |cat_rental_request| %>
+    <% cat = Cat.find_by(id: cat_rental_request.cat_id) %>
+    <li><%= link_to "#{cat.name} -- #{cat_rental_request.start_date} - 
+                     #{cat_rental_request.end_date} (#{cat_rental_request.status})",
+                     cat_rental_request_url(cat_rental_request) %>
+    </li>
+  <% end %>
+</ol>

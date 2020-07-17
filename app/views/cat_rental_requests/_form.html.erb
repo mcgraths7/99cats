@@ -1,0 +1,43 @@
+<% if action == :edit %>
+  <% action_url = cat_rental_request_url(rental) %>
+  <% form_title = 'Edit Rental Request' %>
+  <% submit_value = 'Update' %>
+<% else %>
+  <% action_url = cat_rental_requests_url %>
+  <% form_title = 'New Rental Request' %>
+  <% submit_value = 'Request' %>
+<% end %>
+
+<form action=<%= action_url %> method="post">
+  <% if action == :edit %>
+    <input type="hidden" name="_method" value="PATCH">
+  <% end %>
+  <table>
+    <thead>
+      <tr>
+        <th><%= form_title %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td> <label for="rental_cat_id">Cat</label> </td>
+        <td> 
+          <select name="rental[cat_id]" id="rental_cat_id">
+            <% cats.each do |c| %>
+              <option value="<%= c.id %>"><%= c.name %></option>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td> <label for="rental_start_date">Start Date</label> </td>
+        <td> <input type="date" name="rental[start_date]" id="rental_start_date" value="<%= cat_rental.start_date %>" placeholder="<%= Date.today %>"> </td>
+      </tr>
+      <tr>
+        <td> <label for="rental_end_date">End Date</label> </td>
+        <td> <input type="date" name="rental[end_date]" id="rental_end_date" value="<%= cat_rental.end_date %>" placeholder="<%= Date.tomorrow %>"> </td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="submit" value="<%= submit_value %>">
+</form>
