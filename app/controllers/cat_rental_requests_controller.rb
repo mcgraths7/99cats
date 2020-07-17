@@ -1,9 +1,4 @@
 class CatRentalRequestsController < ApplicationController
-  # def index
-  #   @cat_rental_requests = CatRentalRequest.order(:start_date)
-  #   render :index
-  # end
-  
   def new
     @cats = Cat.all
     @cat_rental = CatRentalRequest.new
@@ -21,12 +16,21 @@ class CatRentalRequestsController < ApplicationController
     end
   end
 
-  # def show
-  #   @cat_rental = current_rental
-  #   @cat = requested_cat
-  #   render :show
-  # end
+  def approve
+    if current_rental.approve!
+      redirect_to proc { cat_url(current_rental.cat_id) }
+    else
+      render json: 'Could not approve rental request'
+    end
+  end
 
+  def deny
+    if current_rental.deny!
+      redirect_to proc { cat_url(current_rental.cat_id) }
+    else
+      render json: 'Could not deny rental request'
+    end
+  end
 
   private
   def rental_params
@@ -36,9 +40,4 @@ class CatRentalRequestsController < ApplicationController
   def current_rental
     CatRentalRequest.find_by(id: params[:id])
   end
-
-  def requested_cat
-    CatRentalRequest.find_by(id: rental_params[:cat_id])
-  end
-
 end

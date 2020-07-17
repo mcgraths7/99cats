@@ -167,22 +167,13 @@ end
 puts "Cats generated!"
 cat_count = Cat.all.count
 puts "Generating requests!"
-1000.times do
+2000.times do
   cat_id = 1 + rand(cat_count)
-  start_date = Faker::Date.between(from: Date.today, to: Date.today + 1.week)
-  end_date = Faker::Date.between(from: Date.today + 8.days, to: Date.today + 1.month)
+  start_date = Faker::Date.between(from: Date.today, to: Date.today + 1.month)
+  end_date = Faker::Date.between(from: start_date + 1.day, to: start_date + 1.month)
   crr = CatRentalRequest.new(cat_id: cat_id, start_date: start_date, end_date: end_date)
   unless crr.save!
     next
   end
 end
 puts "Requests generated!"
-
-# puts "Attempting to approve requests"
-# CatRentalRequest.all.each do |request|
-#   unless request.update(status: 'APPROVED')
-#     request.status = 'DENIED'
-#     request.save
-#   end
-# end
-# puts "Requests approved!"

@@ -40,24 +40,46 @@ class CatRentalRequest < ApplicationRecord
   def cat_cannot_be_rented_twice_at_the_same_time
     return unless persisted?
 
-    unless overlapping_approved_requests.empty? || status == 'DENIED'
+    unless overlapping_approved_requests.empty?
       errors[:cat] << 'cannot be rented twice at the same time'
     end
+  end
+
+  # Instance Methods
+  def approve!
+    if update(status: 'APPROVED')
+      overlapping_pending_requests.update_all(status: 'DENIED')
+    end
+  end
+
+  def deny!
+    update(status: 'DENIED')
+  end
+
+  def pending?
+    status == 'PENDING'
+  end
+
+  def denied?
+    status == 'DENIED'
+  end
+
+  def approved?
+    status == 'APPROVED'
   end
 
   # Helper Methods
   def overlapping_requests
     requests = CatRentalRequest.where(cat_id: cat_id)
-                               .where.not(id: id)
-    overlapping_start = requests.where(start_date: start_date..end_date)
-    overlapping_end = requests.where(end_date: start_date..end_date)
-    overlapping_start.merge(overlapping_end)
+                              .where.not(id: id)
+    requests.where(Arel.sql('start_date <= :end_date AND end_date >= :start_date'), { start_date: start_date, end_date: end_date })
   end
 
   def overlapping_approved_requests
-    overlapping_approved = overlapping_requests.where(status: 'APPROVED')
+    overlapping_requests.where(status: 'APPROVED')
+  end
+
+  def overlapping_pending_requests
+    overlapping_requests.where(status: 'PENDING')
   end
 end
-
-
-# Comment.where(:created_at => @selected_date.beginning_of_day..@selected_date.end_of_day)
