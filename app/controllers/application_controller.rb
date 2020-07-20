@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :already_logged_in
+  helper_method :current_user, :already_logged_in, :require_current_user!
   
   def current_user
     return nil if session[:session_token].nil?
@@ -20,5 +20,9 @@ class ApplicationController < ActionController::Base
     if current_user
       redirect_to cats_url
     end
+  end
+
+  def require_current_user!
+    redirect_to login_url if current_user.nil?
   end
 end

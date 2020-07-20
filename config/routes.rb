@@ -7,7 +7,16 @@ Rails.application.routes.draw do
       post :deny
     end
   end
-  resources :users, only: [:new, :create]
+
+  # Named user resources
+  get 'signup', to: 'users#new'
+  post 'signup', to: 'users#create'
+
+  # Named session resources
   resource :session
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy'
+
   root to: redirect('/cats')
 end
