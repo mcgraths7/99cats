@@ -1,0 +1,27 @@
+<form action="/session" method="POST">
+  <input
+    type="hidden"
+    name="authenticity_token"
+    value="<%= form_authenticity_token %>">
+
+  <table>
+    <thead>
+      <tr>
+        <td>Enter your credentials:</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Username</td>
+        <td><input type="text" name="user[username]" id="user_username"></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><input type="password" name="user[password]" id="user_password"></td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="Log in!"></td>
+      </tr>
+    </tbody>
+  </table>
+</form>
