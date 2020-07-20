@@ -1,4 +1,4 @@
-<% action = (user.persisted? ? user_url(user) : users_url) %>
+<% action = (user.persisted? ? user_url(user) : signup_url) %>
 <% method = (user.persisted? ? "patch" : "post") %>
 <% submit_message = (user.persisted? ? "Update" : "Create") %>
 
@@ -15,7 +15,7 @@
   <table>
     <thead>
       <tr>
-        <td>Credentials:</td>
+        <td>Please choose a username and password:</td>
       </tr>
     </thead>
     <tbody>

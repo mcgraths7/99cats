@@ -13,9 +13,13 @@ class Cat < ApplicationRecord
   # Remember, has_many is just a method where the first argument is
   # the name of the association, and the second argument is an options
   # hash.
+  belongs_to :owner,
+             class_name: :User,
+             foreign_key: :user_id,
+             primary_key: :id
   has_many :rental_requests,
-    class_name: :CatRentalRequest,
-    dependent: :destroy
+           class_name: :CatRentalRequest,
+           dependent: :destroy
 
   def age
     time_ago_in_words(birth_date)

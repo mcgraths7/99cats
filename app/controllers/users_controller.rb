@@ -9,9 +9,11 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.session_token = User.generate_session_token
     if @user.save
+      login!(@user)
+      flash[:notice] = 'Logged in successfully!'
       redirect_to cats_url
     else
-      flash.now[:errors] << @user.errors.full_messages
+      flash.now[:errors] = @user.errors.full_messages
       render :new
     end
   end
