@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :already_logged_in, only: [:new]
   def new
     @user = User.new
     render :new
@@ -6,10 +7,12 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.session_token = User.generate_session_token
     if @user.save
-      redirect_to :show
+      redirect_to cats_url
     else
-      redirect_to :new
+      flash.now[:errors] << @user.errors.full_messages
+      render :new
     end
   end
 

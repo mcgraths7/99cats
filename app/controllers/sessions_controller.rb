@@ -1,25 +1,23 @@
 class SessionsController < ApplicationController
+  before_action :already_logged_in, only: [:new]
+
   def new
     render :new
   end
 
   def create
-    user = User.find_by_credentials(user_params)
+    user = User.find_by_credentials(user_params[:username], user_params[:password])
     if user.nil?
       render json: 'Incorrect username/password'
     else
-      session_token = user.reset_session_token!
-      session[:session_token] = session_token
+      login!(user)
       redirect_to cats_url
     end
   end
 
   def destroy
-    @user = current_user
-    unless @user.nil?
-      @user.reset_session_token!
-    end
-    session[:session_token] = ""
+    logout!
+    redirect_to new_session_url
   end
 
   private
